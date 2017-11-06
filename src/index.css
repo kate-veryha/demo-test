@@ -1,0 +1,25 @@
+form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid;
+}
+
+.app-container {
+    display: flex;
+    align-items: center;
+}
+
+.valid-field {
+    border-color: green;
+}
+
+.invalid-field {
+    border-color: red;
+    color: red;
+}
+
+span {
+    padding: 5px;
+    cursor: pointer;
+}
