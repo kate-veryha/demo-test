@@ -22,7 +22,7 @@ class App extends Component {
         col: null,
         dir: null
       },
-      newUser: {},
+      newUser: { },
     }
   }
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Paper from 'material-ui/Paper';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -30,13 +29,13 @@ export default class UserForm extends Component {
     this.validation = {
       firstName: { rule: /^[A-Za-z\-\s]+$/, errText: 'Can only contain letters, hyphens and spaces', touched: false, valid: false},
       lastName: { rule: /^[A-Za-z\-\s]+$/, errText: 'Can only contain letters, hyphens and spaces', touched: false, valid: false},
-      gender: { rule: /male|female/, errText: '', touched: false, valid: false},
       age: { rule: /^[1-9][0-9]$/, errText: 'Must be in range from 1 to 99', touched: false, valid: false},
       phone: { rule: /^\d{3,12}$/, errText: 'Can only contain 3 to 12 digits', touched: false, valid: false},
     };
   }
 
   handleSubmit(e) {
+    console.log(this.validation);
     if (this.isFormValid()) {
       for (let key in this.validation) {
         if (this.validation.hasOwnProperty(key)) {
@@ -47,15 +46,18 @@ export default class UserForm extends Component {
       this.props.addUser();
       e.target.reset();
     } else {
+      console.log('invalid=(')
     }
     e.preventDefault();
   }
 
   handleChange(e) {
     const target = e.target;
-    this.validation[target.name].touched = true;
+    if (target.name !== 'gender') {
+      this.validation[target.name].touched = true;
       this.validation[target.name].valid = UserForm
         .isFieldValid(target.value, this.validation[target.name].rule);
+    }
     this.props.changeData(target.name, target.value);
   }
 
@@ -96,19 +98,26 @@ export default class UserForm extends Component {
                        onChange={ this.handleChange }
                        errorText={ this.msg('phone')}
                        floatingLabelText='Phone'/>
-            <RadioButtonGroup
-                              name='gender'
-                              onChange={ this.handleChange }
-                              style={styles.radioButtonGroup}>
-              <RadioButton
-                label='Male'
-                style={styles.radioButton}
-                value='male'/>
-              <RadioButton
-                label='Female'
-                style={styles.radioButton}
-                value='female'/>
-            </RadioButtonGroup>
+            <div className='input-container'>
+              <label className='input-label container'>Male
+                <input type='radio' className='input'
+                       onChange={ this.handleChange }
+                       name='gender'
+                       label='Male'
+                       style={styles.radioButton}
+                       value='male'/>
+                <span class="checkmark"></span>
+              </label>
+              <label className='input-label container'>Female
+                <input type='radio' id='r2' className='input'
+                       onChange={ this.handleChange }
+                       name='gender'
+                       label='Female'
+                       style={styles.radioButton}
+                       value='female'/>
+                <span class="checkmark"></span>
+              </label>
+            </div>
             <TextField name='age'
                        floatingLabelText='Age'
                        type='number'

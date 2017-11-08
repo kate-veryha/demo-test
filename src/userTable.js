@@ -67,7 +67,7 @@ export default class UserTable extends Component {
 
   generateCols() {
     const cols = this.props.cols;
-    const sort = this.props.sortPresets || false;
+    const sort = this.props.sortPresets;
     return cols.map((colData) =>
       <ClickableTableHeaderColumn key={colData.key}
                                   order={(sort.col === colData.key) ? this.props.sortPresets.dir : null}
