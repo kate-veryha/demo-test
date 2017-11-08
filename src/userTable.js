@@ -100,7 +100,6 @@ export default class UserTable extends Component {
   }
 
   changeSortOrder(col) {
-    debugger;
     const set = {
       col: col,
       dir: (col === this.props.sortPresets.col)

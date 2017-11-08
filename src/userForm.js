@@ -26,27 +26,27 @@ export default class UserForm extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.validation = {
+    this.v = {
       firstName: { rule: /^[A-Za-z\-\s]+$/, errText: 'Can only contain letters, hyphens and spaces', touched: false, valid: false},
       lastName: { rule: /^[A-Za-z\-\s]+$/, errText: 'Can only contain letters, hyphens and spaces', touched: false, valid: false},
       age: { rule: /^[1-9][0-9]$/, errText: 'Must be in range from 1 to 99', touched: false, valid: false},
       phone: { rule: /^\d{3,12}$/, errText: 'Can only contain 3 to 12 digits', touched: false, valid: false},
     };
+    this.open = false;
   }
 
   handleSubmit(e) {
-    console.log(this.validation);
     if (this.isFormValid()) {
-      for (let key in this.validation) {
-        if (this.validation.hasOwnProperty(key)) {
-          this.validation[key].touched = false;
-          this.validation[key].valid = false;
+      for (let key in this.v) {
+        if (this.v.hasOwnProperty(key)) {
+          this.v[key].touched = false;
+          this.v[key].valid = false;
         }
       }
       this.props.addUser();
       e.target.reset();
     } else {
-      console.log('invalid=(')
+      alert('User wasn\'t added. Please fill all fields correctly');
     }
     e.preventDefault();
   }
@@ -54,9 +54,9 @@ export default class UserForm extends Component {
   handleChange(e) {
     const target = e.target;
     if (target.name !== 'gender') {
-      this.validation[target.name].touched = true;
-      this.validation[target.name].valid = UserForm
-        .isFieldValid(target.value, this.validation[target.name].rule);
+      this.v[target.name].touched = true;
+      this.v[target.name].valid = UserForm
+        .isFieldValid(target.value, this.v[target.name].rule);
     }
     this.props.changeData(target.name, target.value);
   }
@@ -67,17 +67,17 @@ export default class UserForm extends Component {
 
   isFormValid() {
     let isValid = true;
-    for (let key in this.validation) {
-      if (this.validation.hasOwnProperty(key)) {
-        isValid = isValid && this.validation[key].valid;
+    for (let key in this.v) {
+      if (this.v.hasOwnProperty(key)) {
+        isValid = isValid && this.v[key].valid;
       }
     }
     return isValid;
   }
 
   msg(key) {
-    return  this.validation[key].touched && !this.validation[key].valid
-      ? this.validation[key].errText
+    return  this.v[key].touched && !this.v[key].valid
+      ? this.v[key].errText
       : '';
   }
 
@@ -106,7 +106,7 @@ export default class UserForm extends Component {
                        label='Male'
                        style={styles.radioButton}
                        value='male'/>
-                <span class="checkmark"></span>
+                <span className="checkmark"></span>
               </label>
               <label className='input-label container'>Female
                 <input type='radio' id='r2' className='input'
@@ -115,7 +115,7 @@ export default class UserForm extends Component {
                        label='Female'
                        style={styles.radioButton}
                        value='female'/>
-                <span class="checkmark"></span>
+                <span className="checkmark"></span>
               </label>
             </div>
             <TextField name='age'
