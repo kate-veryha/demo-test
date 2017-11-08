@@ -29,7 +29,7 @@ export default class UserForm extends Component {
     this.v = {
       firstName: { rule: /^[A-Za-z\-\s]+$/, errText: 'Can only contain letters, hyphens and spaces', touched: false, valid: false},
       lastName: { rule: /^[A-Za-z\-\s]+$/, errText: 'Can only contain letters, hyphens and spaces', touched: false, valid: false},
-      age: { rule: /^[1-9][0-9]$/, errText: 'Must be in range from 1 to 99', touched: false, valid: false},
+      age: { rule: /^[1-9][0-9]?$/, errText: 'Must be in range from 1 to 99', touched: false, valid: false},
       phone: { rule: /^\d{3,12}$/, errText: 'Can only contain 3 to 12 digits', touched: false, valid: false},
     };
     this.open = false;
@@ -53,10 +53,12 @@ export default class UserForm extends Component {
 
   handleChange(e) {
     const target = e.target;
+    let value;
     if (target.name !== 'gender') {
+      value = target.value;
       this.v[target.name].touched = true;
       this.v[target.name].valid = UserForm
-        .isFieldValid(target.value, this.v[target.name].rule);
+        .isFieldValid(value, this.v[target.name].rule);
     }
     this.props.changeData(target.name, target.value);
   }
@@ -100,21 +102,23 @@ export default class UserForm extends Component {
                        floatingLabelText='Phone'/>
             <div className='input-container'>
               <label className='input-label container'>Male
-                <input type='radio' className='input'
+                <input type='radio'
+                       className='input'
                        onChange={ this.handleChange }
                        name='gender'
                        label='Male'
                        style={styles.radioButton}
-                       value='male'/>
+                       value={false}/>
                 <span className="checkmark"></span>
               </label>
               <label className='input-label container'>Female
-                <input type='radio' id='r2' className='input'
+                <input type='radio'
+                       className='input'
                        onChange={ this.handleChange }
                        name='gender'
                        label='Female'
                        style={styles.radioButton}
-                       value='female'/>
+                       value={true}/>
                 <span className="checkmark"></span>
               </label>
             </div>
